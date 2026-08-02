@@ -16,7 +16,9 @@ Then install individual plugins:
 
 ## Plugins
 
-Nothing published yet — the marketplace manifest is in place and the first plugins are on the way.
+| Name                                             | What it does                                                                                                                    |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| [`commit-message`](./plugins/commit-message)     | Write a commit message for your uncommitted changes, matching the repo's own conventions, and copy it to the clipboard. Never commits. |
 
 ## A word on what's in here
 

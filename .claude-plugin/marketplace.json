@@ -4,5 +4,15 @@
   "owner": {
     "name": "Cliff Meyers"
   },
-  "plugins": []
+  "plugins": [
+    {
+      "name": "commit-message",
+      "source": "./plugins/commit-message",
+      "description": "Write a commit message for your uncommitted changes, matching the repo's own conventions, and copy it to the clipboard. Never commits.",
+      "homepage": "https://github.com/cliffmeyers/cliff-code/tree/main/plugins/commit-message",
+      "repository": "https://github.com/cliffmeyers/cliff-code",
+      "license": "MIT",
+      "keywords": ["git", "commit", "conventional-commits", "skills"]
+    }
+  ]
 }

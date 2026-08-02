@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="cliff-code logo">
+  <title>cliff-code</title>
+
+  <!-- Soft drop shadow for a hint of depth -->
+  <rect x="36" y="52" width="190" height="152" rx="12" fill="#1f2937" opacity="0.12"/>
+
+  <!-- Terminal window -->
+  <rect x="28" y="44" width="190" height="152" rx="12"
+        fill="#ffffff" stroke="#1f2937" stroke-width="6"/>
+
+  <!-- Title bar divider -->
+  <line x1="31" y1="78" x2="215" y2="78"
+        stroke="#1f2937" stroke-width="3" opacity="0.5"/>
+
+  <!-- Window dots — leading one in Claude orange -->
+  <circle cx="50" cy="61" r="5.5" fill="#D97757"/>
+  <circle cx="70" cy="61" r="5.5" fill="#1f2937" opacity="0.35"/>
+  <circle cx="90" cy="61" r="5.5" fill="#1f2937" opacity="0.35"/>
+
+  <!-- Prompt chevron -->
+  <path d="M 62 112 L 90 137 L 62 162"
+        fill="none" stroke="#1f2937" stroke-width="13"
+        stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Cursor -->
+  <rect x="106" y="150" width="60" height="13" rx="2.5" fill="#D97757"/>
+</svg>

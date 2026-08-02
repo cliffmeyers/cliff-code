@@ -1,0 +1,8 @@
+{
+  "name": "cliff-code",
+  "description": "Cliff's random Claude Code plugins.",
+  "owner": {
+    "name": "Cliff Meyers"
+  },
+  "plugins": []
+}

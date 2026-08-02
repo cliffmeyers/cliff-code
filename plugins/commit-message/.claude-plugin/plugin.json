@@ -1,7 +1,6 @@
 {
   "name": "commit-message",
   "description": "Write a commit message for your uncommitted changes, matching the repo's own conventions, and copy it to the clipboard. Never commits.",
-  "version": "0.1.0",
   "author": {
     "name": "Cliff Meyers"
   },

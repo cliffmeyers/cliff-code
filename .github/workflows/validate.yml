@@ -10,6 +10,12 @@ on:
 permissions:
   contents: read
 
+# Supersede in-flight PR runs, but let pushes to main and release-triggered
+# calls finish — cancelling those would leave a release unvalidated.
+concurrency:
+  group: validate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   validate:
     name: validate (${{ matrix.os }})

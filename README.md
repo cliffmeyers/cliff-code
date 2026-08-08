@@ -49,3 +49,5 @@ See [`CLAUDE.md`](./CLAUDE.md) for more detail on the dev workflow, granularity 
 ## Issues / feedback
 
 File an issue on the [GitHub repo](https://github.com/cliffmeyers/cliff-code/issues).
+
+For anything security-related, don't open a public issue — see [`SECURITY.md`](./SECURITY.md) for the private disclosure path and what's in scope.

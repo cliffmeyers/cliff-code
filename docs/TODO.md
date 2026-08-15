@@ -2,6 +2,12 @@
 
 Loose ideas, not commitments. Anything here that becomes real work belongs in an issue or a PR.
 
+## A `repo-standards` plugin
+
+Audit a GitHub repo's config against a profile of my standards, report drift, apply fixes on
+request. Design is settled — language, architecture, config schema, check list, and the safety
+traps — in [`REPO_CONFIG.md`](./REPO_CONFIG.md). No code written yet.
+
 ## Possibly bundle a commit message linter
 
 The `commit-message` skill writes messages but nothing checks them. Worth deciding whether a

@@ -81,12 +81,14 @@ jobs:
             exit 0
           fi
 
-          # Default: today's date, with -2, -3, … if the day already has one.
+          # Default: today's date, with .2, .3, … if the day already has one.
+          # A dot, not a hyphen: a hyphen is semver's prerelease marker, so
+          # v2026.08.15-2 would sort *before* v2026.08.15.
           base="v$(date -u +%Y.%m.%d)"
           candidate="$base"
           n=2
           while git rev-parse -q --verify "refs/tags/$candidate" >/dev/null; do
-            candidate="$base-$n"
+            candidate="$base.$n"
             n=$((n + 1))
           done
           echo "name=$candidate" >> "$GITHUB_OUTPUT"

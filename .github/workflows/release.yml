@@ -1,0 +1,111 @@
+name: release
+
+# Tags and GitHub Releases here are human-facing only.
+#
+# Plugin delivery does not depend on either one. Plugins in this marketplace
+# omit `version` from plugin.json, so Claude Code resolves each plugin's
+# version from its commit SHA — changes reach users the moment they land on
+# main, tag or no tag. A Release is a readable record of what already shipped,
+# plus a ref that cautious users can pin to:
+#
+#   /plugin marketplace add cliffmeyers/cliff-code@v2026.08.02
+#
+# Releases are cut automatically on every merge to main that touches what
+# users receive. That works because PRs land as squash merges: one commit per
+# PR, with the PR description as the body, so each commit is already a written
+# release note and the path filter below is an accurate "did this affect
+# users?" test. Group work by scoping the PR.
+#
+# Tags are dated (vYYYY.MM.DD) because there is no semver to mirror. To cut one
+# by hand — a docs-only release, or a re-cut — use Actions → release → Run
+# workflow, optionally naming the tag.
+#
+# There is deliberately no `tags: [v*]` trigger. A `paths` filter applies to
+# every push the trigger matches, and a tag push carries no changed paths, so
+# the two together would silently never fire.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'plugins/**'
+      - '.claude-plugin/marketplace.json'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to create (default: vYYYY.MM.DD from today)'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+# Never cancel a release mid-flight: a superseded run could leave a tag pushed
+# with no Release attached to it.
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/validate.yml
+
+  release:
+    name: Create GitHub Release
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      # Inputs go through env rather than being interpolated into the script
+      # body, so a crafted tag name cannot break out into the shell.
+      - name: Resolve tag
+        id: tag
+        env:
+          REQUESTED_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+
+          if [ -n "${REQUESTED_TAG:-}" ]; then
+            if git rev-parse -q --verify "refs/tags/$REQUESTED_TAG" >/dev/null; then
+              echo "::error::tag $REQUESTED_TAG already exists"
+              exit 1
+            fi
+            echo "name=$REQUESTED_TAG" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Default: today's date, with -2, -3, … if the day already has one.
+          base="v$(date -u +%Y.%m.%d)"
+          candidate="$base"
+          n=2
+          while git rev-parse -q --verify "refs/tags/$candidate" >/dev/null; do
+            candidate="$base-$n"
+            n=$((n + 1))
+          done
+          echo "name=$candidate" >> "$GITHUB_OUTPUT"
+
+      # A tag pushed with GITHUB_TOKEN does not start a new workflow run, so
+      # this job creates the tag and publishes the Release in one pass — and
+      # the push cannot loop back into this workflow.
+      - name: Create tag
+        env:
+          TAG: ${{ steps.tag.outputs.name }}
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$TAG" -m "$TAG"
+          git push origin "$TAG"
+
+      - name: Create release
+        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
+        with:
+          tag_name: ${{ steps.tag.outputs.name }}
+          generate_release_notes: true

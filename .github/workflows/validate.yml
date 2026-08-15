@@ -1,0 +1,41 @@
+name: validate
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_call:
+
+permissions:
+  contents: read
+
+# Supersede in-flight PR runs, but let pushes to main and release-triggered
+# calls finish — cancelling those would leave a release unvalidated.
+concurrency:
+  group: validate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  validate:
+    name: validate (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Set up Node (for the optional Claude Code CLI)
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: '24'
+
+      - name: Install Claude Code CLI (best-effort)
+        run: npm install -g @anthropic-ai/claude-code || echo "::warning::Claude Code CLI install failed; jq checks will still run"
+        continue-on-error: true
+
+      - name: Run validation
+        run: bash .github/scripts/validate.sh

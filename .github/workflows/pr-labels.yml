@@ -1,0 +1,31 @@
+# Every PR must declare its changelog intent via a label
+name: PR labels
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled, unlabeled]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-labels-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  require-changelog-label:
+    name: require a changelog label
+    runs-on: ubuntu-latest
+    steps:
+      # Runs (and fails) only when NONE of the allowed labels are present
+      - name: Fail unless the PR has a changelog label
+        if: >-
+          !contains(github.event.pull_request.labels.*.name, 'feature') &&
+          !contains(github.event.pull_request.labels.*.name, 'bug') &&
+          !contains(github.event.pull_request.labels.*.name, 'docs') &&
+          !contains(github.event.pull_request.labels.*.name, 'ci') &&
+          !contains(github.event.pull_request.labels.*.name, 'chore') &&
+          !contains(github.event.pull_request.labels.*.name, 'skip-changelog')
+        run: |
+          echo "::error::This PR needs one of: feature, bug, docs, ci, chore (or skip-changelog to opt out of release notes)."
+          exit 1

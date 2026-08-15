@@ -101,7 +101,7 @@ Tags and Releases exist for two human-facing reasons:
 - A readable record of what landed, one entry per merged PR.
 - An optional pin for cautious users: a marketplace source accepts a `ref`, so `/plugin marketplace add cliffmeyers/cliff-code@v2026.08.02` sticks to that tag.
 
-Because there is no semver to mirror, release tags are dated: `vYYYY.MM.DD` (adding `-2`, `-3` if a day has more than one). A date is the honest unit here — it answers "how stale am I?", which is the only question a tag can answer when delivery is continuous.
+Because there is no semver to mirror, release tags are dated: `vYYYY.MM.DD` (adding `.2`, `.3` if a day has more than one — a dot rather than a hyphen, which semver would read as a prerelease marker and sort *before* the unsuffixed tag). A date is the honest unit here — it answers "how stale am I?", which is the only question a tag can answer when delivery is continuous.
 
 **Releases are cut automatically.** `release.yml` fires on every push to `main` under `plugins/**` or `.claude-plugin/marketplace.json`, re-runs validation, tags the merge commit, and publishes a Release with auto-generated notes.
 

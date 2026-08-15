@@ -1,6 +1,13 @@
 version: 2
+# version updates only, security updates enabled in GitHub Settings
+# monthly + grouped to avoid PR floods
 updates:
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
+    # passes the pr-labels gate but stays out of release notes
+    labels: ["skip-changelog"]

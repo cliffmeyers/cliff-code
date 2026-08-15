@@ -1,0 +1,16 @@
+# executed via workflows/release.yml with generate_release_notes
+# labels enforced via workflows/pr-labels.yml
+# a new release creates a note for every commit since the previous tag
+changelog:
+  categories:
+    - title: 🚀 Features
+      labels: [feature]
+    - title: 🐛 Bug Fixes
+      labels: [bug]
+    - title: 📖 Docs
+      labels: [docs]
+    - title: 🧹 Repo & CI
+      labels: [ci, chore]
+  exclude:
+    # Dependabot PRs carry this label via dependabot.yml
+    labels: [skip-changelog]

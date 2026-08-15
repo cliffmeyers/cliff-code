@@ -5,5 +5,7 @@
 .idea/
 .vscode/
 
+/tmp
+
 # Per-plugin local state (fallback when CLAUDE_PLUGIN_DATA isn't set)
 .local-data/

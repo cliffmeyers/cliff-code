@@ -23,9 +23,9 @@ jobs:
           !contains(github.event.pull_request.labels.*.name, 'feature') &&
           !contains(github.event.pull_request.labels.*.name, 'bug') &&
           !contains(github.event.pull_request.labels.*.name, 'docs') &&
-          !contains(github.event.pull_request.labels.*.name, 'ci') &&
           !contains(github.event.pull_request.labels.*.name, 'chore') &&
-          !contains(github.event.pull_request.labels.*.name, 'skip-changelog')
+          !contains(github.event.pull_request.labels.*.name, 'refactor') &&
+          !contains(github.event.pull_request.labels.*.name, 'unlisted')
         run: |
-          echo "::error::This PR needs one of: feature, bug, docs, ci, chore (or skip-changelog to opt out of release notes)."
+          echo "::error::This PR needs one of: feature, bug, docs, chore, refactor (or unlisted to opt out of release notes)."
           exit 1

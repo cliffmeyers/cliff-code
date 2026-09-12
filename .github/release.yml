@@ -9,8 +9,8 @@ changelog:
       labels: [bug]
     - title: 📖 Docs
       labels: [docs]
-    - title: 🧹 Repo & CI
-      labels: [ci, chore]
+    - title: 🧹 Maintenance
+      labels: [chore, refactor]
   exclude:
     # Dependabot PRs carry this label via dependabot.yml
-    labels: [skip-changelog]
+    labels: [unlisted]

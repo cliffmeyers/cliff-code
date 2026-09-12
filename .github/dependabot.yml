@@ -10,4 +10,4 @@ updates:
       actions:
         patterns: ["*"]
     # passes the pr-labels gate but stays out of release notes
-    labels: ["skip-changelog"]
+    labels: ["unlisted"]
